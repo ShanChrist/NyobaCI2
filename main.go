@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/rand"
 	"fmt"
 	"log"
 )
@@ -13,4 +14,11 @@ func main() {
 	a := 10
 	b := 10
 	log.Println(a + b)
+
+	var key [32]byte
+	_, err := rand.Read(key[:])
+	if err != nil {
+		fmt.Println("error generating random key")
+		return
+	}
 }
