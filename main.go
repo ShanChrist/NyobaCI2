@@ -1,7 +1,7 @@
 package main
 
 import (
-	"crypto/rand"
+	"database/sql"
 	"fmt"
 	"log"
 )
@@ -15,10 +15,19 @@ func main() {
 	b := 10
 	log.Println(a + b)
 
-	var key [32]byte
-	_, err := rand.Read(key[:])
+	username := "budi"
+	query := fmt.Sprintf("SELECT * FROM users WHERE username = %s", username)
+
+	db, err := sql.Open("mysql", "user:password@tcp(localhost:3306)/database")
 	if err != nil {
-		fmt.Println("error generating random key")
-		return
+		panic(err.Error())
 	}
+	defer db.Close()
+
+	rows, err := db.Query(query)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer rows.Close()
+
 }
